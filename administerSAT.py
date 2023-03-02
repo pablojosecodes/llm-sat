@@ -39,17 +39,34 @@ def test(answer, realanswer):
             wrong = wrong + 1
     return (right, wrong)
 
+def prompt_gpt3(query):
+    response = openai.Completion.create(
+                    prompt=query,
+                    **COMPLETIONS_API_PARAMS
+            )   
+    return response["choices"][0]["text"]
+
+
+def prompt_chatgpt(query):
+    print("TRYING")
+    completion = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "user", "content": query}
+        ]
+    )
+    print(completion.choices[0].message)
+    return (completion.choices[0].message)
+
+
+
 def get_answers(dct, persona):
     initialPrompt = "I am going to give you an examination. Answer the following questions from the perspective of " +  persona + " with ONLY the correct letters.- do not articulate your reasoning behind the answers. I repeat, only respond with the letters \"A\", \"B\", \"C\", or \"D\""
     overarchingAnswer = ""
     for i in range(len(dct)):
         query = initialPrompt + "\n" + "\n".join(dct[str(i)])
-
-        response = openai.Completion.create(
-                    prompt=query,
-                    **COMPLETIONS_API_PARAMS
-            )   
-        added = response["choices"][0]["text"]
+        added = prompt_chatgpt(query)
+        # added = prompt_gpt3(query)
     
 
         if "\n" in added:
