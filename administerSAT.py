@@ -89,7 +89,7 @@ def answer_writing(
     persona: str,
     show_prompt: bool = False
 ) -> str:
-    writing_file = open("writing.json", "r")
+    writing_file = open("json/writing.json", "r")
     writing_questions = json.load(writing_file)
 
     answer = get_answers(writing_questions, persona)
@@ -102,7 +102,7 @@ def answer_reading(
     persona: str,
     show_prompt: bool = False
 ) -> str:
-    reading_file = open("reading.json", "r")
+    reading_file = open("json/reading.json", "r")
     reading_questions = json.load(reading_file)   
 
     answer = get_answers(reading_questions, persona)
